@@ -1,3 +1,5 @@
+// Função para Criar a Máscara de formatação de preço
+
 const Mask = {
     apply(input, func) {
         setTimeout(function () {
@@ -11,5 +13,14 @@ const Mask = {
             style: 'currency',
             currency: 'BRL'
         }).format(value / 100)
+    }
+}
+
+// Função utilizada para solicitar confirmação no delete form;
+
+function handleDeleteConfirmation() {
+    const confirmation = confirm("Confirmar?")
+    if (!confirmation) {
+        event.preventDefault()
     }
 }
