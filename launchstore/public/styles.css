@@ -17,6 +17,7 @@
 
 html, body {
     min-height: 100vh;
+    position: relative;
 }
 
 body {
@@ -28,6 +29,12 @@ body {
     width: 90%;
     margin: 0 auto;
     max-width: 940px;
+}
+
+/* Criado para configuração do footer */
+
+.container.main {
+    padding: 0 0 10px;
 }
 
 .button {
@@ -211,4 +218,18 @@ form .item span {
     font-weight: bold;
     text-transform: uppercase;
     font-size: 12px;
+}
+
+/* Footer */
+
+footer {
+    /* Essencial para posicionamento do footer */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Configurações extras */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
