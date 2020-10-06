@@ -1,7 +1,7 @@
 // Função para Criar a Máscara de formatação de preço
-
 const Mask = {
     apply(input, func) {
+        input.value = input.value.replace(/\D/g, "")
         setTimeout(function () {
             input.value = Mask[func](input.value)
         }, 1)
@@ -17,10 +17,9 @@ const Mask = {
 }
 
 // Função utilizada para solicitar confirmação no delete form;
-
 function handleDeleteConfirmation() {
     const confirmation = confirm("Confirmar?")
     if (!confirmation) {
-        event.preventDefault()
+        Event.preventDefault()
     }
 }
