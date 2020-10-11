@@ -26,35 +26,77 @@ function handleDeleteConfirmation() {
 
 // Função para gerênciamento de fotos
 const PhotosUpload = {
+    preview: document.querySelector('#photos-preview'),
+    files: [],
     uploadLimit: 6,
     handleFileInput(event) {
         const { files: fileList } = event.target;
-        const { uploadLimit } = PhotosUpload;
 
-        if (fileList.length > uploadLimit) {
-            alert(`Envie no máximo ${uploadLimit} fotos`)
-            event.preventDefault()
-            return
-        }
+        if (PhotosUpload.hasLimit(event)) return
 
         Array.from(fileList).forEach(file => {
+
+            PhotosUpload.files.push(file);
+
             const reader = new FileReader();
 
             reader.onload = () => {
                 const image = new Image();
                 image.src = String(reader.result);
 
-                const div = document.createElement('div');
+                const div = PhotosUpload.getContainer(image);
 
-                div.classList.add('photo');
-                div.onclick = () => alert('remover foto');
-                div.appendChild(image);
-
-                document.querySelector('#photos-preview').appendChild(div);
-
+                PhotosUpload.preview.appendChild(div);
             }
 
             reader.readAsDataURL(file)
         })
+
+        PhotosUpload.getAllFiles();
+    },
+    hasLimit(event) {
+        const { uploadLimit } = PhotosUpload;
+        const { files: fileList } = event.target;
+
+        if (fileList.length > uploadLimit) {
+            alert(`Envie no máximo ${uploadLimit} fotos`)
+            event.preventDefault()
+            return true;
+        }
+
+        return false;
+    },
+    getAllFiles() {
+        const dataTransfer = new DataTransfer();
+
+        PhotosUpload.files.forEach(file => dataTransfer.items.add(file));
+
+        console.log(dataTransfer);
+    },
+    getContainer(image) {
+        const div = document.createElement('div');
+
+        div.classList.add('photo');
+
+        div.onclick = PhotosUpload.removePhoto;
+
+        div.appendChild(image);
+
+        div.appendChild(PhotosUpload.getRemoveButton());
+
+        return div;
+    },
+    getRemoveButton() {
+        const button = document.createElement('i');
+        button.classList.add('material-icons');
+        button.innerHTML = "close";
+        return button;
+    },
+    removePhoto(event) {
+        const photoDiv = event.target.parentNode;
+        const photosArray = Array.from(PhotosUpload.preview.children);
+        const index = photosArray.indexOf(photoDiv);
+
+        photoDiv.remove();
     }
 }
