@@ -26,11 +26,13 @@ function handleDeleteConfirmation() {
 
 // Função para gerênciamento de fotos
 const PhotosUpload = {
+    input: "",
     preview: document.querySelector('#photos-preview'),
     files: [],
     uploadLimit: 6,
     handleFileInput(event) {
         const { files: fileList } = event.target;
+        PhotosUpload.input = event.target;
 
         if (PhotosUpload.hasLimit(event)) return
 
@@ -52,11 +54,11 @@ const PhotosUpload = {
             reader.readAsDataURL(file)
         })
 
-        PhotosUpload.getAllFiles();
+        PhotosUpload.input.files = PhotosUpload.getAllFiles();
     },
     hasLimit(event) {
-        const { uploadLimit } = PhotosUpload;
-        const { files: fileList } = event.target;
+        const { uploadLimit, input, preview } = PhotosUpload;
+        const { files: fileList } = input;
 
         if (fileList.length > uploadLimit) {
             alert(`Envie no máximo ${uploadLimit} fotos`)
@@ -64,14 +66,28 @@ const PhotosUpload = {
             return true;
         }
 
+        const photosDiv = []
+        preview.childNodes.forEach(item => {
+            if (item.classList && item.classList.value == 'photo') {
+                photosDiv.push(item)
+            }
+        })
+
+        const totalPhotos = fileList.length + photosDiv.length;
+        if (totalPhotos > uploadLimit) {
+            alert('Você atingou o limite máximo de fotos')
+            event.preventDefault()
+            return true;
+        }
+
         return false;
     },
     getAllFiles() {
-        const dataTransfer = new DataTransfer();
+        const dataTransfer = new ClipboardEvent("").clipboardData || new DataTransfer();
 
         PhotosUpload.files.forEach(file => dataTransfer.items.add(file));
 
-        console.log(dataTransfer);
+        return dataTransfer.files;
     },
     getContainer(image) {
         const div = document.createElement('div');
@@ -93,9 +109,12 @@ const PhotosUpload = {
         return button;
     },
     removePhoto(event) {
-        const photoDiv = event.target.parentNode;
+        const photoDiv = event.target.parentNode; //<div class="photo">
         const photosArray = Array.from(PhotosUpload.preview.children);
         const index = photosArray.indexOf(photoDiv);
+
+        PhotosUpload.files.splice(index, 1)
+        PhotosUpload.input.files = PhotosUpload.getAllFiles()
 
         photoDiv.remove();
     }
