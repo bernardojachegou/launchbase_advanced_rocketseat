@@ -37,7 +37,7 @@ module.exports = {
         const filesPromise = request.files.map(file => File.create({ ...file, product_id: productId }));
         await Promise.all(filesPromise)
 
-        return response.redirect(`products/${productId}`)
+        return response.redirect(`products/${productId}/edit`)
     },
 
     async edit(request, response) {
@@ -53,7 +53,15 @@ module.exports = {
         results = await Categories.all();
         const categories = results.rows;
 
-        return response.render("products/edit.njk", { product, categories })
+        // Puxa informações das imagens salvas; 
+        results = await Product.files(product.id);
+        let files = results.rows;
+        files = files.map(file => ({
+            ...file,
+            src: `${request.protocol}://${request.headers.host}${file.path.replace("public", "")}`
+        }))
+
+        return response.render("products/edit.njk", { product, categories, files })
     },
 
     async put(request, response) {
