@@ -73,6 +73,13 @@ module.exports = {
             }
         }
 
+        if (request.files.length != 0) {
+            const newFilesPromise = request.files.map(file =>
+                File.create({ ...file, product_id: request.body.id }))
+
+            await Promise.all(newFilesPromise);
+        }
+
         if (request.body.removed_files) {
             const removedFiles = request.body.removed_files.split(",");
             const lastIndex = removedFiles.length - 1;
