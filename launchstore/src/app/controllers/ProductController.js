@@ -1,5 +1,6 @@
 const Categories = require('../models/Categories');
 const Product = require('../models/Product');
+const File = require('../models/File');
 const { formatPrice } = require('../../lib/utils');
 
 module.exports = {
@@ -24,12 +25,19 @@ module.exports = {
             }
         }
 
+        if (request.files.length == 0) {
+            return response.send('Por favor, envie pelo menos uma imagem');
+        }
+
         // Lógica para salvar
         // Puxa as informações do produto e joga da variável
         let results = await Product.create(request.body);
         const productId = results.rows[0].id;
 
-        return response.redirect(`products/${productId}/edit`)
+        const filesPromise = request.files.map(file => File.create({ ...file, product_id: productId }));
+        await Promise.all(filesPromise)
+
+        return response.redirect(`products/${productId}`)
     },
 
     async edit(request, response) {
