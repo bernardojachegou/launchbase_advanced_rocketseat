@@ -1,7 +1,7 @@
 const Categories = require('../models/Categories');
 const Product = require('../models/Product');
 const File = require('../models/File');
-const { formatPrice } = require('../../lib/utils');
+const { formatPrice, date } = require('../../lib/utils');
 
 module.exports = {
     create(request, response) {
@@ -37,16 +37,27 @@ module.exports = {
         const filesPromise = request.files.map(file => File.create({ ...file, product_id: productId }));
         await Promise.all(filesPromise)
 
-        return response.redirect(`products/${productId}/edit`)
+        return response.redirect(`products/${productId}`)
     },
 
-    show(resquest, response) {
-        // let results = await Product.find(request.params.id);
-        // const product = results.rows[0];
+    async show(request, response) {
+        let results = await Product.find(request.params.id);
+        const product = results.rows[0];
 
-        // if (!product) return response.send("Produto não encontrado!");
+        if (!product) return response.send("Produto não encontrado!");
 
-        return response.render("products/show");
+        const { day, hour, minutes, month } = date(product.updated_at);
+
+        product.published = {
+            day: `${day}/${month}`,
+            hour: `${hour}h${minutes}`,
+        }
+
+        product.oldPrice = formatPrice(product.old_price);
+        product.price = formatPrice(product.price);
+
+
+        return response.render("products/show", { product });
     },
 
     async edit(request, response) {
@@ -110,7 +121,7 @@ module.exports = {
 
         await Product.update(request.body);
 
-        return response.redirect(`/products/${request.body.id}/edit`);
+        return response.redirect(`/products/${request.body.id}`);
     },
 
     async delete(request, response) {
