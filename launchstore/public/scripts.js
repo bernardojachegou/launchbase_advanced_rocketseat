@@ -26,10 +26,12 @@ function handleDeleteConfirmation() {
 
 // Função para gerênciamento de fotos
 const PhotosUpload = {
+
     input: "",
     preview: document.querySelector('#photos-preview'),
     files: [],
     uploadLimit: 6,
+
     handleFileInput(event) {
         const { files: fileList } = event.target;
         PhotosUpload.input = event.target;
@@ -115,6 +117,18 @@ const PhotosUpload = {
 
         PhotosUpload.files.splice(index, 1)
         PhotosUpload.input.files = PhotosUpload.getAllFiles()
+
+        photoDiv.remove();
+    },
+    removeOldPhoto(event) {
+        const photoDiv = event.target.parentNode;
+
+        if (photoDiv.id) {
+            const removedFiles = document.querySelector('input[name="removed_files]');
+            if (removedFiles) {
+                removedFiles.value += `${photoDiv.id},`
+            }
+        }
 
         photoDiv.remove();
     }
