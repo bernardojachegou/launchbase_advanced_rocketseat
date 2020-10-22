@@ -1,4 +1,4 @@
-// Função para Criar a Máscara de formatação de preço
+// Mask function used to format price;
 const Mask = {
     apply(input, func) {
         input.value = input.value.replace(/\D/g, "")
@@ -16,7 +16,7 @@ const Mask = {
     }
 }
 
-// Função utilizada para solicitar confirmação no delete form;
+// Confirmation function used to confirm delete option;
 function handleDeleteConfirmation() {
     const confirmation = confirm("Confirmar?")
     if (!confirmation) {
@@ -24,7 +24,7 @@ function handleDeleteConfirmation() {
     }
 }
 
-// Função para gerênciamento de fotos
+// Object created to handle photos update;
 const PhotosUpload = {
 
     input: "",
@@ -131,5 +131,21 @@ const PhotosUpload = {
         }
 
         photoDiv.remove();
+    }
+}
+
+// Object created to handle image selection inside show page;
+const ImageGallery = {
+    highlight: document.querySelector('.gallery .highlight > img'),
+    previews: document.querySelectorAll('.gallery-preview img'),
+
+    setImage(event) {
+        const { target } = event;
+
+        ImageGallery.previews.forEach(preview => preview.classList.remove('active'));
+
+        target.classList.add('active');
+
+        ImageGallery.highlight.src = target.src;
     }
 }
