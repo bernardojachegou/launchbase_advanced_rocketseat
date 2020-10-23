@@ -147,5 +147,27 @@ const ImageGallery = {
         target.classList.add('active');
 
         ImageGallery.highlight.src = target.src;
+        LightBox.image.src = target.src;
     }
+}
+
+// Object created to handle the image modal;
+const LightBox = {
+    target: document.querySelector('.lightbox-target'),
+    image: document.querySelector('.lightbox-target img'),
+    closeButton: document.querySelector('.lightbox-target a.lightbox-close'),
+
+    open() {
+        LightBox.target.style.opacity = 1;
+        LightBox.target.style.top = 0;
+        LightBox.target.style.bottom = 0;
+        LightBox.closeButton.style.top = 0;
+    },
+    close() {
+        LightBox.target.style.opacity = 0;
+        LightBox.target.style.top = "-100%";
+        LightBox.target.style.bottom = 'initial';
+        LightBox.closeButton.style.top = "-80px";
+
+    },
 }
