@@ -1,8 +1,15 @@
 const db = require('../../config/db');
 
 module.exports = {
-    create(data) {
-        const query = `
+  all() {
+    return db.query(`
+        SELECT * FROM products
+        ORDER BY updated_at DESC
+        `);
+  },
+
+  create(data) {
+    const query = `
             INSERT INTO products (
                 category_id,
                 user_id,
@@ -16,30 +23,29 @@ module.exports = {
             RETURNING id
         `;
 
-        // Expressão regular para formatação do preço
-        data.price = data.price.replace(/\D/g, "");
+    // Expressão regular para formatação do preço
+    data.price = data.price.replace(/\D/g, '');
 
-        const values = [
-            data.category_id,
-            data.user_id || 1,
-            data.name,
-            data.description,
-            data.old_price || data.price,
-            data.price,
-            data.quantity,
-            data.status || 1
-        ];
+    const values = [
+      data.category_id,
+      data.user_id || 1,
+      data.name,
+      data.description,
+      data.old_price || data.price,
+      data.price,
+      data.quantity,
+      data.status || 1,
+    ];
 
-        return db.query(query, values)
-    },
+    return db.query(query, values);
+  },
 
-    find(id) {
-        return db.query(`SELECT * FROM products WHERE id = $1`, [id])
-    },
+  find(id) {
+    return db.query(`SELECT * FROM products WHERE id = $1`, [id]);
+  },
 
-    update(data) {
-
-        const query = `
+  update(data) {
+    const query = `
             UPDATE products SET
                 category_id=($1),
                 user_id=($2),
@@ -50,30 +56,32 @@ module.exports = {
                 quantity=($7),
                 status=($8)
             WHERE id = $9
-        `
+        `;
 
-        const values = [
-            data.category_id,
-            data.user_id,
-            data.name,
-            data.description,
-            data.old_price,
-            data.price,
-            data.quantity,
-            data.status,
-            data.id
-        ]
+    const values = [
+      data.category_id,
+      data.user_id,
+      data.name,
+      data.description,
+      data.old_price,
+      data.price,
+      data.quantity,
+      data.status,
+      data.id,
+    ];
 
-        return db.query(query, values)
-    },
+    return db.query(query, values);
+  },
 
-    delete(id) {
-        return db.query(`DELETE FROM products WHERE id = $1`, [id])
-    },
+  delete(id) {
+    return db.query(`DELETE FROM products WHERE id = $1`, [id]);
+  },
 
-    files(id) {
-        return db.query(`
-            SELECT * FROM files WHERE product_id = $1
-        `, [id]);
-    }
-}
+  files(id) {
+    return db.query(
+      `SELECT * FROM files WHERE product_id = $1
+      `,
+      [id]
+    );
+  },
+};
