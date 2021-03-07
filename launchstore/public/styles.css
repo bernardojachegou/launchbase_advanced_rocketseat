@@ -250,7 +250,7 @@ form .item #photos-upload p {
   padding: 8px 16px;
   border-radius: 4px;
   box-shadow: 0 2px 2px -6px #333;
-  background-color: var(--secondary-color);
+  background-color: #0b8bf3;
   color: white;
   text-align: center;
   width: 100%;
@@ -447,9 +447,13 @@ form .item #photos-preview img {
 }
 
 .product-single .price-buy .buy button {
-  background-color: var(--secondary-color);
+  background-color: #0b8bf3;
   font-size: 14px;
   letter-spacing: 0.4px;
+}
+
+.product-single .price-buy .buy button:hover {
+  background-color: #0057da;
 }
 
 /* SHOPPING */
