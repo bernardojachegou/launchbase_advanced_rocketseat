@@ -27,7 +27,8 @@
 
 <ul>
     <li>Launchstore (Módulo)</li>
-    <li>(Desafios)</li>
+    <li>Launchstore: Controle de usuário (Login)</li>
+    <li>Desafios (Promises)</li>
 </ul>
 
 ## :computer: Orientações:
