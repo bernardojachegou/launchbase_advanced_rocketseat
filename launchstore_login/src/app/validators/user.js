@@ -4,7 +4,10 @@ async function post(request, response, next) {
   const keys = Object.keys(request.body);
   for (key of keys) {
     if (request.body[key] == '') {
-      return response.send('Please, fill all the fields');
+      return response.render('user/register', {
+        user: request.body,
+        error: 'Por favor, preencha todos os campos!',
+      });
     }
   }
 
@@ -18,11 +21,17 @@ async function post(request, response, next) {
   });
 
   if (user) {
-    return response.send('User exists');
+    return response.render('user/register', {
+      user: request.body,
+      error: 'Usuário já cadastrado!',
+    });
   }
 
   if (password != passwordRepeat) {
-    return response.send('Password mismatch');
+    return response.render('user/register', {
+      user: request.body,
+      error: 'As senhas não conferem!',
+    });
   }
 
   next();
