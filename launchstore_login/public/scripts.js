@@ -232,8 +232,38 @@ const Validate = {
     const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     if (!value.match(mailFormat)) {
-      error = 'Email inválido';
+      error = 'E-mail inválido';
     }
+    return {
+      error,
+      value,
+    };
+  },
+  isCpfCnpj(value) {
+    let error = null;
+
+    const clearValues = value.replace(/\D/g, '');
+
+    if (clearValues.length > 11 && clearValues.length !== 14) {
+      error = 'CNPJ inválido';
+    } else if (clearValues.length < 12 && clearValues.length !== 11) {
+      error = 'CPF inválido';
+    }
+
+    return {
+      error,
+      value,
+    };
+  },
+  isCep(value) {
+    let error = null;
+
+    const clearValues = value.replace(/\D/g, '');
+
+    if (clearValues.length !== 8) {
+      error = 'CEP inválido';
+    }
+
     return {
       error,
       value,
