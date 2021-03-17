@@ -52,17 +52,29 @@ END;
 
 $$ LANGUAGE plpgsql;
 
--- auto updated_at products --
+-- trigger to auto updated_at products --
 CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON products 
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
--- auto updated_at users --
+-- trigger to auto updated_at users --
 CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON users 
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
--- inserts --
+-- Connect-pg-simple table -- 
+CREATE TABLE "session" (
+  "sid" varchar NOT NULL COLLATE "default",
+	"sess" json NOT NULL,
+	"expire" timestamp(6) NOT NULL
+)
+WITH (OIDS=FALSE);
+
+ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+-- inserts (Examples) --
 INSERT INTO categories(name) VALUES('outros');

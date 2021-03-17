@@ -1,5 +1,4 @@
 const { Pool } = require('pg');
-
 const db_name = 'Launchstore (Login)';
 
 module.exports = new Pool({
