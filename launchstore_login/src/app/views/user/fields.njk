@@ -15,7 +15,15 @@
 <div class="item">
   <div>Senha</div>
   <div class="input">
-    <input type="password" name="password" placeholder="Mínimo de 6 caracteres">
+    <input 
+      type="password" 
+      name="password" 
+      {% if not user.id %}
+      placeholder="Escolha uma senha segura"
+      {% else %}
+      placeholder="Digite uma senha para atualizar"
+      {% endif %}
+    >
   </div>
 </div>
 
