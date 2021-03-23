@@ -2,7 +2,8 @@ const User = require('../models/User');
 const { compare } = require('bcryptjs');
 
 async function login(request, response, next) {
-  const { email, password } = request.session;
+  const { email, password } = request.body;
+
   const user = await User.findOne({ where: { email } });
 
   if (!user) {
