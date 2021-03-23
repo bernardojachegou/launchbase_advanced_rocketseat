@@ -7,6 +7,11 @@ const session = require('./config/session');
 const server = express();
 
 server.use(session); // Create user session;
+server.use((request, response, next) => {
+  response.locals.session = request.session;
+  next();
+});
+
 server.use(express.urlencoded({ extended: true })); // Active request.body (json)
 server.use(express.static('public')); // Pointer to public folder
 server.use(methodOverride('_method')); // Active methods: PUT / DELETE

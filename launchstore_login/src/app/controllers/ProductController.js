@@ -18,29 +18,33 @@ module.exports = {
   },
 
   async post(request, response) {
-    const keys = Object.keys(request.body);
+    try {
+      const keys = Object.keys(request.body);
 
-    for (key of keys) {
-      if (request.body[key] == '') {
-        return response.send('Por favor, preencha todos os campos!');
+      for (key of keys) {
+        if (request.body[key] == '') {
+          return response.send('Por favor, preencha todos os campos!');
+        }
       }
+
+      if (request.files.length == 0) {
+        return response.send('Por favor, envie pelo menos uma imagem');
+      }
+
+      // Lógica para salvar
+      // Puxa as informações do produto e joga da variável
+      let results = await Product.create(request.body);
+      const productId = results.rows[0].id;
+
+      const filesPromise = request.files.map((file) =>
+        File.create({ ...file, product_id: productId })
+      );
+      await Promise.all(filesPromise);
+
+      return response.redirect(`products/${productId}`);
+    } catch (error) {
+      console.error(error);
     }
-
-    if (request.files.length == 0) {
-      return response.send('Por favor, envie pelo menos uma imagem');
-    }
-
-    // Lógica para salvar
-    // Puxa as informações do produto e joga da variável
-    let results = await Product.create(request.body);
-    const productId = results.rows[0].id;
-
-    const filesPromise = request.files.map((file) =>
-      File.create({ ...file, product_id: productId })
-    );
-    await Promise.all(filesPromise);
-
-    return response.redirect(`products/${productId}`);
   },
 
   async show(request, response) {

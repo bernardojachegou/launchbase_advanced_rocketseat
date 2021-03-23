@@ -13,7 +13,7 @@
     name="filter"
     placeholder="Buscar por produtos"
     {% if search.term %}
-        value={{search.term}}
+    value={{search.term}}
     {% endif%}
   >
   </form>
@@ -29,12 +29,12 @@
         <li class="accounts">
           <a href="/accounts">
             <i class="material-icons">account_circle</i>
-            Minha Conta
+            Meu espaço
           </a>
-          {% if user %}
+          {% if session.userId %}
             <ul class="submenu">
               <li>
-                <a href="/users">Configurações</a>
+                <a href="/users">Minha conta</a>
               </li>
               <li>
                 <a href="/buying">Meus pedidos</a>
