@@ -48,7 +48,55 @@ async function forgot(request, response, next) {
   }
 }
 
+async function reset(request, response, next) {
+  // search user;
+  const { email, password, token, passwordRepeat } = request.body;
+  let user = await User.findOne({ where: { email } });
+  if (!user) {
+    return response.render('session/password-reset', {
+      user: request.body,
+      token,
+      error: 'Email não cadastrado!',
+    });
+  }
+
+  // check password;
+  if (password != passwordRepeat) {
+    return response.render('session/password-reset', {
+      user: request.body,
+      token,
+      error: 'As senhas não conferem!',
+    });
+  }
+
+  // verify token;
+  if (!token || token != user.reset_token) {
+    return response.render('session/password-reset', {
+      user: request.body,
+      token,
+      error:
+        'Token inválido. Por favor, solicite uma nova recuperação de senha.',
+    });
+  }
+
+  // check if token is valid;
+  let now = new Date();
+  now = now.setHours(now.getHours());
+
+  if (now > user.reset_token_expires) {
+    return response.render('session/password-reset', {
+      user: request.body,
+      error: 'Token expirado! Por favor, solocoti uma nova recuperação. ',
+    });
+  }
+
+  request.user = user;
+
+  next();
+}
+
 module.exports = {
   login,
   forgot,
+  reset,
 };
