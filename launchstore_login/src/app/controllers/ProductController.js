@@ -31,8 +31,7 @@ module.exports = {
         return response.send('Por favor, envie pelo menos uma imagem');
       }
 
-      // Lógica para salvar
-      // Puxa as informações do produto e joga da variável
+      request.body.user_id = request.session.userId;
       let results = await Product.create(request.body);
       const productId = results.rows[0].id;
 
