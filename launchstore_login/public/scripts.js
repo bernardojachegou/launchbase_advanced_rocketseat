@@ -45,7 +45,6 @@ const Mask = {
   },
 };
 
-// Confirmation function used to confirm delete option;
 function handleDeleteConfirmation() {
   const confirmation = confirm('Confirmar?');
   if (!confirmation) {
@@ -53,7 +52,6 @@ function handleDeleteConfirmation() {
   }
 }
 
-// Object created to handle photos update;
 const PhotosUpload = {
   input: '',
   preview: document.querySelector('#photos-preview'),
@@ -164,7 +162,6 @@ const PhotosUpload = {
   },
 };
 
-// Object created to handle image selection inside show page;
 const ImageGallery = {
   highlight: document.querySelector('.gallery .highlight > img'),
   previews: document.querySelectorAll('.gallery-preview img'),
@@ -183,7 +180,6 @@ const ImageGallery = {
   },
 };
 
-// Object created to handle the image modal;
 const LightBox = {
   target: document.querySelector('.lightbox-target'),
   image: document.querySelector('.lightbox-target img'),

@@ -26,7 +26,6 @@ async function login(request, response, next) {
 
   next();
 }
-
 async function forgot(request, response, next) {
   const { email } = request.body;
 
@@ -47,7 +46,6 @@ async function forgot(request, response, next) {
     console.error(error);
   }
 }
-
 async function reset(request, response, next) {
   // search user;
   const { email, password, token, passwordRepeat } = request.body;

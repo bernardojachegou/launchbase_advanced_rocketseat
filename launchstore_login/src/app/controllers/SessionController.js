@@ -2,7 +2,6 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const mailer = require('../../lib/mailer');
 const { hash } = require('bcryptjs');
-const { has } = require('browser-sync');
 
 module.exports = {
   loginForm(request, response) {

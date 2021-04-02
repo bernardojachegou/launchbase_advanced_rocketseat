@@ -16,7 +16,6 @@ module.exports = {
 
     return db.query(query, values);
   },
-
   async delete(id) {
     try {
       const result = await db.query(`SELECT * FROM files WHERE id = $1`, [id]);

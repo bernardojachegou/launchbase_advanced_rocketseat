@@ -16,7 +16,6 @@ module.exports = {
         throw new Error(err);
       });
   },
-
   async post(request, response) {
     try {
       const keys = Object.keys(request.body);
@@ -45,7 +44,6 @@ module.exports = {
       console.error(error);
     }
   },
-
   async show(request, response) {
     let results = await Product.find(request.params.id);
     const product = results.rows[0];
@@ -73,7 +71,6 @@ module.exports = {
 
     return response.render('products/show', { product, files });
   },
-
   async edit(request, response) {
     let results = await Product.find(request.params.id);
     const product = results.rows[0];
@@ -100,7 +97,6 @@ module.exports = {
 
     return response.render('products/edit.njk', { product, categories, files });
   },
-
   async put(request, response) {
     const keys = Object.keys(request.body);
 
@@ -141,7 +137,6 @@ module.exports = {
 
     return response.redirect(`/products/${request.body.id}`);
   },
-
   async delete(request, response) {
     await Product.delete(request.body.id);
 

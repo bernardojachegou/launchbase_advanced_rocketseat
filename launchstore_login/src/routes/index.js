@@ -1,7 +1,6 @@
 const express = require('express');
 const routes = express.Router();
 const HomeController = require('../app/controllers/HomeController');
-
 const products = require('./products');
 const users = require('./users');
 
